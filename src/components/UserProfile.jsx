@@ -1,12 +1,42 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { FaAngleRight } from "react-icons/fa6";
+import {
+  FaAngleRight,
+  FaBehance,
+  FaDribbble,
+  FaGithub,
+  FaInstagram,
+  FaLinkedin,
+} from "react-icons/fa6";
 import { BsStarFill } from "react-icons/bs";
 import { IoLocationOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import ImageModal from "./ImageModal";
 import { getSellerProfile } from "../../utils/userData";
+
+const socials = [
+  {
+    platformType: "LinkedIn",
+    icon: <FaLinkedin />,
+  },
+  {
+    platformType: "Behance",
+    icon: <FaBehance />,
+  },
+  {
+    platformType: "Github",
+    icon: <FaGithub />,
+  },
+  {
+    platformType: "Instagram",
+    icon: <FaInstagram />,
+  },
+  {
+    platformType: "Dribble",
+    icon: <FaDribbble />,
+  },
+];
 
 const ImageComponent = ({ src, alt, className, onClick }) => (
   <img
@@ -19,8 +49,7 @@ const ImageComponent = ({ src, alt, className, onClick }) => (
 );
 
 const UserProfile = () => {
-  const s3Url =
-    "https://bfmimageholder.s3.ap-southeast-2.amazonaws.com/seller/image";
+  const s3Url = "https://bfm-main-webapp.s3.ap-south-1.amazonaws.com/";
 
   const [userData, setUserData] = useState(null);
   const [showImage, setShowImage] = useState(true);
@@ -36,11 +65,15 @@ const UserProfile = () => {
 
   useEffect(() => {
     const username = window.location.href.split("/")[4];
-    console.log(username);
     getSellerProfile(username)
       .then((data) => setUserData(data?.data))
       .catch((err) => console.error(err));
   }, []);
+
+  function getIconByName(platformType) {
+    const icons = socials.find(() => platformType);
+    return icons.icon;
+  }
 
   return (
     <div className="flex lg:flex-row flex-col w-11/12 justify-between max-w-[1920px] gap-14 py-16 mx-auto">
@@ -50,7 +83,7 @@ const UserProfile = () => {
             <div className="w-full h-full items-start shrink-0 gap-[22.29px] flex">
               <div className="w-1/3 aspect-square rounded-2xl shrink-0 overflow-hidden relative bg-stone-300">
                 <img
-                  src={userData?.image ? s3Url + userData?.image : ""}
+                  src={userData?.image ? userData?.image : ""}
                   alt=""
                   className="size-full object-cover shrink-0"
                 />
@@ -106,8 +139,8 @@ const UserProfile = () => {
               </div>
               <div className="w-full text-3xl justify-start items-start gap-[18px] inline-flex">
                 {userData?.socialMediaLinks?.map((link, index) => (
-                  <Link to={link} key={index}>
-                    {link.name}
+                  <Link to={link.link} key={index} className="">
+                    {getIconByName(link.platformType)}
                   </Link>
                 ))}
               </div>
@@ -115,48 +148,53 @@ const UserProfile = () => {
             {/* )} */}
           </div>
           <div className="space-y-5">
-            <div className="space-y-2">
-              <div className="max-w-[295px] text-stone-500 text-base font-normal leading-[27px]">
-                Service Provided
+            {userData?.services.length > 0 && (
+              <div className="space-y-2">
+                <div className="max-w-[295px] text-stone-500 text-base font-normal leading-[27px]">
+                  Service Provided
+                </div>
+                <div className="flex items-center flex-wrap gap-2">
+                  {userData?.services?.map((service, index) => (
+                    <div
+                      key={index}
+                      className="px-[12.95px] pt-[4.35px] pb-[3.52px] rounded-[20.03px] border border-stone-950 justify-center items-center inline-flex"
+                    >
+                      <p className="text-stone-950 text-sm leading-normal">
+                        {service}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="flex items-center flex-wrap gap-2">
-                {userData?.services?.map((service, index) => (
-                  <div
-                    key={index}
-                    className="px-[12.95px] pt-[4.35px] pb-[3.52px] rounded-[20.03px] border border-stone-950 justify-center items-center inline-flex"
-                  >
-                    <p className="text-stone-950 text-sm leading-normal">
-                      {service}
-                    </p>
-                  </div>
-                ))}
+            )}
+            {userData?.skills.length > 0 && (
+              <div className="space-y-2">
+                <div className="max-w-[295px] text-stone-500 text-base font-normal leading-[27px]">
+                  Skills
+                </div>
+                <div className="flex items-center flex-wrap gap-2">
+                  {userData?.skills?.map((skill, index) => (
+                    <div
+                      key={index}
+                      className="px-[12.95px] pt-[4.35px] pb-[3.52px] rounded-[20.03px] border border-stone-950 justify-center items-center inline-flex"
+                    >
+                      <p className="text-stone-950 text-sm leading-normal">
+                        {skill}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div className="space-y-2">
-              <div className="max-w-[295px] text-stone-500 text-base font-normal leading-[27px]">
-                Skills
-              </div>
-              <div className="flex items-center flex-wrap gap-2">
-                {userData?.skills?.map((skill, index) => (
-                  <div
-                    key={index}
-                    className="px-[12.95px] pt-[4.35px] pb-[3.52px] rounded-[20.03px] border border-stone-950 justify-center items-center inline-flex"
-                  >
-                    <p className="text-stone-950 text-sm leading-normal">
-                      {skill}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
       <div className="flex flex-col rounded-xl w-full">
-        {userData?.images[0] ? (
-          <ImageComponent
-            src={s3Url + userData?.images[0]}
+        {userData?.videos[0] ? (
+          <video
+            src={userData?.videos[0]}
             alt=""
+            autoPlay
             className="object-cover size-full rounded-xl"
           />
         ) : null}
@@ -169,7 +207,7 @@ const UserProfile = () => {
           </p>
         </div>
         {/* Experience */}
-        {userData?.experienceDetails && (
+        {userData?.experienceDetails.length > 0 && (
           <div className="flex-col justify-start items-start gap-2.5 mt-7 inline-flex">
             <div className="text-neutral-800 text-[32px] font-bold">
               Experience
@@ -209,27 +247,35 @@ const UserProfile = () => {
             }}
             className="grid grid-cols-1 justify-center py-7 items-center w-full gap-2"
           >
-            {userData?.images
-              ?.slice(1, userData?.images?.length)
-              ?.map((data, i) =>
-                data ? (
-                  <div key={i} className={`relative`}>
-                    <ImageComponent
-                      loading="lazy"
-                      className="size-full cursor-pointer object-cover rounded-xl"
-                      src={s3Url + data}
-                      alt=""
-                      onClick={() => openImageModal(data)}
-                    />
-                  </div>
-                ) : null
-              )}
+            {userData?.videos?.map((data, i) =>
+              data ? (
+                <div key={i} className={`relative`}>
+                  <video
+                    loading="lazy"
+                    className="size-full cursor-pointer object-cover rounded-xl"
+                    src={data}
+                    alt=""
+                    autoPlay
+                  />
+                </div>
+              ) : null
+            )}
+            {userData?.images?.map((data, i) =>
+              data ? (
+                <div key={i} className={`relative`}>
+                  <ImageComponent
+                    loading="lazy"
+                    className="size-full cursor-pointer object-cover rounded-xl"
+                    src={data}
+                    alt=""
+                    onClick={() => openImageModal(data)}
+                  />
+                </div>
+              ) : null
+            )}
 
             {modalImage && (
-              <ImageModal
-                imageUrl={s3Url + modalImage}
-                closeModal={closeImageModal}
-              />
+              <ImageModal imageUrl={modalImage} closeModal={closeImageModal} />
             )}
           </div>
         ) : null}
