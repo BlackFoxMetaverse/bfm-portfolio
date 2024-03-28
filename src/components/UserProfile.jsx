@@ -92,8 +92,6 @@ const UserProfile = () => {
     }
   }
 
-  console.log(userData);
-
   return (
     <div className="flex lg:flex-row flex-col w-11/12 justify-between max-w-[1920px] gap-14 py-16 mx-auto">
       <div className="flex gap-7 xl:w-[40%] w-full items-start xl:sticky static inset-y-24 h-full">
