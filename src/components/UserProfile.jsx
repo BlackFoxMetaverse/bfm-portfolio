@@ -66,7 +66,7 @@ const UserProfile = () => {
   const uid = new URLSearchParams(window.location.search);
 
   useEffect(() => {
-    const username = window.location.href.split("/")[4];
+    const username = window.location.href.split("profile/")[1];
     getSellerProfile(username)
       .then((data) => setUserData(data?.data))
       .catch((err) => console.error(err));
@@ -119,7 +119,7 @@ const UserProfile = () => {
                   <div className="text-stone-500 3xl:text-lg 2xl:text-base text-sm font-normal">
                     {userData?.userName
                       ? userData?.userName
-                      : window.location.href.split("/")[4]}
+                      : window.location.href.split("profile/")[1]}
                   </div>
                   <div className="text-stone-500 3xl:text-lg 2xl:text-base text-sm font-normal">
                     {userData?.profession}
