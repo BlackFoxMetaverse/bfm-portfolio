@@ -13,7 +13,7 @@ import {
 } from "react-icons/fa6";
 import { BsStarFill } from "react-icons/bs";
 import { IoLocationOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import ImageModal from "./ImageModal";
 import { getSellerProfile } from "../../utils/userData";
 
@@ -63,7 +63,7 @@ const UserProfile = () => {
     setModalImageUrl(null);
   };
 
-  const uid = new URLSearchParams(window.location.search);
+  const uid = useSearchParams(window.location.search);
 
   useEffect(() => {
     const username = window.location.href.split("profile/")[1];
@@ -91,6 +91,8 @@ const UserProfile = () => {
       window.alert("Error while sharing your portfolio");
     }
   }
+
+  console.log(uid[0].toString());
 
   return (
     <div className="flex lg:flex-row flex-col w-11/12 justify-between max-w-[1920px] gap-14 py-16 mx-auto">
@@ -168,8 +170,8 @@ const UserProfile = () => {
             </div>
             {/* )} */}
           </div>
-          {window.location.search &&
-            uid.get("uid").toString() === userData?.uid && (
+          {uid[0].toString() &&
+            uid[0].get("uid").toString() === userData?.uid && (
               <button
                 type="share"
                 onClick={handleShare}
