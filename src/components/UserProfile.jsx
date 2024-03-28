@@ -8,6 +8,8 @@ import {
   FaGithub,
   FaInstagram,
   FaLinkedin,
+  FaLinkedinIn,
+  FaShare,
 } from "react-icons/fa6";
 import { BsStarFill } from "react-icons/bs";
 import { IoLocationOutline } from "react-icons/io5";
@@ -15,26 +17,26 @@ import { Link } from "react-router-dom";
 import ImageModal from "./ImageModal";
 import { getSellerProfile } from "../../utils/userData";
 
-const socials = [
+const SocialTypes = [
   {
-    platformType: "LinkedIn",
-    icon: <FaLinkedin />,
+    name: "LinkedIn",
+    icon: <FaLinkedinIn />,
   },
   {
-    platformType: "Behance",
-    icon: <FaBehance />,
-  },
-  {
-    platformType: "Github",
-    icon: <FaGithub />,
-  },
-  {
-    platformType: "Instagram",
+    name: "Instagram",
     icon: <FaInstagram />,
   },
   {
-    platformType: "Dribble",
+    name: "Behance",
+    icon: <FaBehance />,
+  },
+  {
+    name: "Dribble",
     icon: <FaDribbble />,
+  },
+  {
+    name: "Github",
+    icon: <FaGithub />,
   },
 ];
 
@@ -49,8 +51,6 @@ const ImageComponent = ({ src, alt, className, onClick }) => (
 );
 
 const UserProfile = () => {
-  const s3Url = "https://bfm-main-webapp.s3.ap-south-1.amazonaws.com/";
-
   const [userData, setUserData] = useState(null);
   const [showImage, setShowImage] = useState(true);
   const [modalImage, setModalImageUrl] = useState(null);
@@ -63,6 +63,8 @@ const UserProfile = () => {
     setModalImageUrl(null);
   };
 
+  const uid = new URLSearchParams(window.location.search);
+
   useEffect(() => {
     const username = window.location.href.split("/")[4];
     getSellerProfile(username)
@@ -70,10 +72,27 @@ const UserProfile = () => {
       .catch((err) => console.error(err));
   }, []);
 
-  function getIconByName(platformType) {
-    const icons = socials.find(() => platformType);
-    return icons.icon;
+  function getIconByName(name) {
+    const socialType = SocialTypes.find(
+      (social) => social.name.toLowerCase() === name?.toLowerCase()
+    );
+    return socialType ? socialType.icon : null;
   }
+
+  async function handleShare() {
+    try {
+      await navigator.share({
+        title: document.title,
+        text: "My Portfolio on BFM",
+        url: window.location.href.split("?")[0],
+      });
+    } catch (error) {
+      console.log(error);
+      window.alert("Error while sharing your portfolio");
+    }
+  }
+
+  console.log(userData);
 
   return (
     <div className="flex lg:flex-row flex-col w-11/12 justify-between max-w-[1920px] gap-14 py-16 mx-auto">
@@ -83,7 +102,11 @@ const UserProfile = () => {
             <div className="w-full h-full items-start shrink-0 gap-[22.29px] flex">
               <div className="w-1/3 aspect-square rounded-2xl shrink-0 overflow-hidden relative bg-stone-300">
                 <img
-                  src={userData?.image ? userData?.image : ""}
+                  src={
+                    userData?.image
+                      ? userData?.image
+                      : "https://i.pinimg.com/564x/70/dd/61/70dd612c65034b88ebf474a52ccc70c4.jpg"
+                  }
                   alt=""
                   className="size-full object-cover shrink-0"
                 />
@@ -147,6 +170,17 @@ const UserProfile = () => {
             </div>
             {/* )} */}
           </div>
+          {window.location.search &&
+            uid.get("uid").toString() === userData?.uid && (
+              <button
+                type="share"
+                onClick={handleShare}
+                className="w-full bg-black text-white flex gap-2 justify-center items-center py-2 rounded-md"
+              >
+                Share
+                <FaShare className="text-xs" />
+              </button>
+            )}
           <div className="space-y-5">
             {userData?.services.length > 0 && (
               <div className="space-y-2">
@@ -194,8 +228,9 @@ const UserProfile = () => {
           <video
             src={userData?.videos[0]}
             alt=""
-            autoPlay
+            controls
             className="object-cover size-full rounded-xl"
+            autoPlay
           />
         ) : null}
         <div>
@@ -247,7 +282,7 @@ const UserProfile = () => {
             }}
             className="grid grid-cols-1 justify-center py-7 items-center w-full gap-2"
           >
-            {userData?.videos?.map((data, i) =>
+            {userData?.videos?.slice(1)?.map((data, i) =>
               data ? (
                 <div key={i} className={`relative`}>
                   <video
@@ -255,7 +290,7 @@ const UserProfile = () => {
                     className="size-full cursor-pointer object-cover rounded-xl"
                     src={data}
                     alt=""
-                    autoPlay
+                    controls
                   />
                 </div>
               ) : null
