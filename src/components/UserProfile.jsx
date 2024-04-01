@@ -81,14 +81,18 @@ const UserProfile = () => {
 
   async function handleShare() {
     try {
+      if (navigator.canShare) {
       await navigator.share({
         title: document.title,
         text: "My Portfolio on BFM",
         url: window.location.href.split("?")[0],
       });
+      } else {
+        throw new Error("Cannot share your portfolio")
+      }
     } catch (error) {
       console.log(error);
-      window.alert("Error while sharing your portfolio");
+      window.alert(error?.message);
     }
   }
 
