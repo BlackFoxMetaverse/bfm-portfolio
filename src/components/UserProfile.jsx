@@ -54,6 +54,7 @@ const UserProfile = () => {
   const [userData, setUserData] = useState(null);
   const [showImage, setShowImage] = useState(true);
   const [modalImage, setModalImageUrl] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const openImageModal = (imageUrl) => {
     setModalImageUrl(imageUrl);
@@ -82,20 +83,20 @@ const UserProfile = () => {
   async function handleShare() {
     try {
       if (navigator.canShare) {
-      await navigator.share({
-        title: document.title,
-        text: "My Portfolio on BFM",
-        url: window.location.href.split("?")[0],
-      });
+        await navigator.share({
+          title: document.title,
+          text: "My Portfolio on BFM",
+          url: window.location.href.split("?")[0],
+        });
       } else {
         const url = window.location.href.split("?")[0];
-        const el = document.createElement('textarea');
+        const el = document.createElement("textarea");
         el.value = url;
-        document.appendChild(el);
+        document.body.appendChild(el);
         el.select();
-        document.execCommand('copy');
+        document.execCommand("copy");
         document.body.removeChild(el);
-        window.alert("Link copied to clipboard: " + url);
+        setShowModal(true);
       }
     } catch (error) {
       console.log(error);
@@ -103,11 +104,12 @@ const UserProfile = () => {
     }
   }
 
-  console.log(uid[0].toString());
-
   return (
-    <div className="flex lg:flex-row flex-col w-11/12 justify-between max-w-[1920px] gap-14 py-16 mx-auto">
-      <div className="flex gap-7 xl:w-[40%] w-full items-start xl:sticky static inset-y-24 h-full">
+    <div
+      id="userProfile"
+      className="flex lg:flex-row flex-col w-11/12 justify-between max-w-[1920px] gap-14 py-5 mx-auto"
+    >
+      <div className="flex gap-7 xl:w-[40%] w-full items-start xl:sticky static inset-y-14 h-full">
         <div className="space-y-5 w-full">
           <div className="w-full flex flex-col overflow-hidden gap-8 rounded-lg justify-center bg-white p-7 items-center">
             <div className="w-full h-full items-start shrink-0 gap-[22.29px] flex">
@@ -173,7 +175,7 @@ const UserProfile = () => {
               </div>
               <div className="w-full text-3xl justify-start items-start gap-[18px] inline-flex">
                 {userData?.socialMediaLinks?.map((link, index) => (
-                  <Link to={link.link} key={index} className="">
+                  <Link to={link.link} key={index} className="text-black">
                     {getIconByName(link.platformType)}
                   </Link>
                 ))}
@@ -326,6 +328,42 @@ const UserProfile = () => {
           </div>
         ) : null}
       </div>
+      {showModal && (
+        <div className="fixed z-10 inset-0 overflow-y-auto">
+          <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div className="sm:flex sm:items-start">
+                  <div className="mt-3 text-center sm:mt-0 sm:text-left">
+                    <h3 className="text-lg leading-6 font-medium text-gray-900">
+                      Link Copied Successfully
+                    </h3>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">
+                        The link has been copied to your clipboard.
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        You can now paste it wherever you like.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button
+                  onClick={() => {
+                    setShowModal(false);
+                  }}
+                  type="button"
+                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-black text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 sm:w-auto sm:text-sm"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
