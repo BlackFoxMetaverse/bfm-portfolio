@@ -107,9 +107,9 @@ const UserProfile = () => {
   return (
     <div
       id="userProfile"
-      className="flex lg:flex-row flex-col w-11/12 justify-between max-w-[1920px] gap-14 py-5 mx-auto"
+      className="flex lg:flex-row flex-col w-11/12 justify-between max-w-[1920px] gap-14 py-10 mx-auto"
     >
-      <div className="flex gap-7 xl:w-[40%] w-full items-start xl:sticky static inset-y-14 h-full">
+      <div className="flex gap-7 xl:w-[40%] w-full items-start xl:sticky static inset-y-10 h-full">
         <div className="space-y-5 w-full">
           <div className="w-full flex flex-col overflow-hidden gap-8 rounded-lg justify-center bg-white p-7 items-center">
             <div className="w-full h-full items-start shrink-0 gap-[22.29px] flex">
@@ -237,15 +237,30 @@ const UserProfile = () => {
         </div>
       </div>
       <div className="flex flex-col rounded-xl w-full">
-        {userData?.videos[0] ? (
+        {userData?.images[0].endsWith(
+          ".mp4" ||
+            ".avi" ||
+            ".wmv" ||
+            ".mov" ||
+            ".mkv" ||
+            ".flv" ||
+            ".webm" ||
+            ".avchd"
+        ) ? (
           <video
-            src={userData?.videos[0]}
+            src={userData?.images[0]}
             alt=""
             controls
             className="object-cover size-full rounded-xl"
             autoPlay
           />
-        ) : null}
+        ) : (
+          <img
+            src={userData?.images[0]}
+            alt=""
+            className="object-cover size-full rounded-xl"
+          />
+        )}
         <div>
           <h2 className="mt-8 w-full text-3xl font-bold text-neutral-800 max-md:max-w-full">
             About {userData?.userName}
@@ -295,8 +310,17 @@ const UserProfile = () => {
             }}
             className="grid grid-cols-1 justify-center py-7 items-center w-full gap-2"
           >
-            {userData?.videos?.slice(1)?.map((data, i) =>
-              data ? (
+            {userData?.images?.slice(1)?.map((data, i) =>
+              data.endsWith(
+                ".mp4" ||
+                  ".avi" ||
+                  ".wmv" ||
+                  ".mov" ||
+                  ".mkv" ||
+                  ".flv" ||
+                  ".webm" ||
+                  ".avchd"
+              ) ? (
                 <div key={i} className={`relative`}>
                   <video
                     loading="lazy"
@@ -308,7 +332,7 @@ const UserProfile = () => {
                 </div>
               ) : null
             )}
-            {userData?.images?.map((data, i) =>
+            {userData?.images?.slice(1)?.map((data, i) =>
               data ? (
                 <div key={i} className={`relative`}>
                   <ImageComponent
