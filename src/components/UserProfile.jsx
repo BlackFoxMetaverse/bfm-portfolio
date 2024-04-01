@@ -88,7 +88,14 @@ const UserProfile = () => {
         url: window.location.href.split("?")[0],
       });
       } else {
-        throw new Error("Cannot share your portfolio")
+        const url = window.location.href.split("?")[0];
+        const el = document.createElement('textarea');
+        el.value = url;
+        document.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        window.alert("Link copied to clipboard: " + url);
       }
     } catch (error) {
       console.log(error);
