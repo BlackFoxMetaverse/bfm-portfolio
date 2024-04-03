@@ -237,7 +237,8 @@ const UserProfile = () => {
         </div>
       </div>
       <div className="flex flex-col rounded-xl w-full">
-        {userData?.images[0].endsWith(
+        {userData?.images &&
+        userData?.images[0].endsWith(
           ".mp4" ||
             ".avi" ||
             ".wmv" ||
@@ -303,7 +304,7 @@ const UserProfile = () => {
             </div>
           </div>
         )}
-        {showImage ? (
+        {userData?.images ? (
           <div
             style={{
               margin: 0,
