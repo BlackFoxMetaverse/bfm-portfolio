@@ -13,7 +13,7 @@ import {
 } from "react-icons/fa6";
 import { BsStarFill } from "react-icons/bs";
 import { IoLocationOutline } from "react-icons/io5";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useRoutes, useSearchParams } from "react-router-dom";
 import ImageModal from "./ImageModal";
 import { getSellerProfile } from "../../utils/userData";
 
@@ -104,12 +104,14 @@ const UserProfile = () => {
     }
   }
 
+  console.log(userData?.experienceDetails[0]?.link);
+
   return (
     <div
       id="userProfile"
       className="flex lg:flex-row flex-col w-11/12 justify-between max-w-[1920px] gap-14 py-10 mx-auto"
     >
-      <div className="flex gap-7 xl:w-[40%] w-full items-start xl:sticky static inset-y-10 h-full">
+      <div className="flex gap-7 xl:w-[40%] w-full items-start lg:sticky static inset-y-10 h-full">
         <div className="space-y-5 w-full">
           <div className="w-full flex flex-col overflow-hidden gap-8 rounded-lg justify-center bg-white p-7 items-center">
             <div className="w-full h-full items-start shrink-0 gap-[22.29px] flex">
@@ -237,17 +239,16 @@ const UserProfile = () => {
         </div>
       </div>
       <div className="flex flex-col rounded-xl w-full">
-        {userData?.images &&
-        userData?.images[0].endsWith(
-          ".mp4" ||
-            ".avi" ||
-            ".wmv" ||
-            ".mov" ||
-            ".mkv" ||
-            ".flv" ||
-            ".webm" ||
-            ".avchd"
-        ) ? (
+        {userData?.images[0] === null ? null : userData?.images[0]?.endsWith(
+            ".mp4" ||
+              ".avi" ||
+              ".wmv" ||
+              ".mov" ||
+              ".mkv" ||
+              ".flv" ||
+              ".webm" ||
+              ".avchd"
+          ) ? (
           <video
             src={userData?.images[0]}
             alt=""
@@ -289,7 +290,7 @@ const UserProfile = () => {
                     {exp?.content}
                   </div>
                   <Link
-                    href={exp?.link}
+                    to={exp?.link}
                     target="_blank"
                     type="button"
                     className="px-7 py-2.5 rounded border border-black justify-center items-center gap-2.5 inline-flex"
@@ -304,7 +305,7 @@ const UserProfile = () => {
             </div>
           </div>
         )}
-        {userData?.images ? (
+        {userData?.images === null ? (
           <div
             style={{
               margin: 0,
@@ -312,7 +313,7 @@ const UserProfile = () => {
             className="grid grid-cols-1 justify-center py-7 items-center w-full gap-2"
           >
             {userData?.images?.slice(1)?.map((data, i) =>
-              data.endsWith(
+              data?.endsWith(
                 ".mp4" ||
                   ".avi" ||
                   ".wmv" ||
