@@ -64,8 +64,6 @@ const UserProfile = () => {
     setModalImageUrl(null);
   };
 
-  const uid = useSearchParams(window.location.search);
-
   useEffect(() => {
     const username = window.location.href.split("profile/")[1];
     getSellerProfile(username)
@@ -79,32 +77,6 @@ const UserProfile = () => {
     );
     return socialType ? socialType.icon : null;
   }
-
-  async function handleShare() {
-    try {
-      if (navigator.canShare) {
-        await navigator.share({
-          title: document.title,
-          text: "My Portfolio on BFM",
-          url: window.location.href.split("?")[0],
-        });
-      } else {
-        const url = window.location.href.split("?")[0];
-        const el = document.createElement("textarea");
-        el.value = url;
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand("copy");
-        document.body.removeChild(el);
-        setShowModal(true);
-      }
-    } catch (error) {
-      console.log(error);
-      window.alert(error?.message);
-    }
-  }
-
-  console.log(userData);
 
   return (
     <div className="bg-black">
@@ -172,17 +144,6 @@ const UserProfile = () => {
               </div>
             </div>
             {/* )} */}
-            {uid[0].toString() &&
-              uid[0].get("uid").toString() === userData?.uid && (
-                <button
-                  type="share"
-                  onClick={handleShare}
-                  className="w-full bg-white text-black flex gap-2 justify-center items-center py-2 rounded-md"
-                >
-                  Share
-                  <FaShare className="text-xs" />
-                </button>
-              )}
             <div className="space-y-5">
               {userData?.services.length > 0 && (
                 <div className="space-y-2">
