@@ -120,9 +120,7 @@ const UserProfile = () => {
                 <div className="w-1/3 aspect-square rounded-2xl shrink-0 overflow-hidden relative bg-[#E0FF00]">
                   <img
                     src={
-                      userData?.image
-                        ? userData?.image
-                        : "../../../public/default_male.svg"
+                      userData?.image ? userData?.image : "/default_male.svg"
                     }
                     alt=""
                     className="size-full object-cover shrink-0"
