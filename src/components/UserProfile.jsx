@@ -154,7 +154,7 @@ const UserProfile = () => {
                     {userData?.services?.map((service, index) => (
                       <div
                         key={index}
-                        className="px-[12.95px] pt-[4.35px] pb-[3.52px] rounded-[20.03px] bg-[#4b484b] justify-center items-center inline-flex"
+                        className="px-2 py-1 rounded-[20.03px] bg-[#2f4f90] justify-center items-center inline-flex"
                       >
                         <p className=" text-[10px] leading-normal">{service}</p>
                       </div>
@@ -171,7 +171,7 @@ const UserProfile = () => {
                     {userData?.skills?.map((skill, index) => (
                       <div
                         key={index}
-                        className="px-[12.95px] pt-[4.35px] pb-[3.52px] rounded-[20.03px] bg-[#4b484b] justify-center items-center inline-flex"
+                        className="px-2 py-1 rounded-[20.03px] bg-red-500 justify-center items-center inline-flex"
                       >
                         <p className=" text-[10px] leading-normal">{skill}</p>
                       </div>
@@ -197,7 +197,7 @@ const UserProfile = () => {
               src={userData?.images[0]}
               alt=""
               controls
-              className="object-cover size-full rounded-xl"
+              className="object-fill aspect-video size-full rounded-xl"
               autoPlay
             />
           ) : (
@@ -273,7 +273,7 @@ const UserProfile = () => {
                         key={i}
                         alt=""
                         controls
-                        className="object-cover size-full rounded"
+                        className="object-contain aspect-video w-full rounded"
                       />
                     ) : (
                       <div key={i} className={`relative`}>
