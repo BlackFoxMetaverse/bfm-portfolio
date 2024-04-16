@@ -7,15 +7,15 @@ import {
   FaDribbble,
   FaGithub,
   FaInstagram,
-  FaLinkedin,
   FaLinkedinIn,
   FaShare,
 } from "react-icons/fa6";
-import { BsStarFill } from "react-icons/bs";
 import { IoLocationOutline } from "react-icons/io5";
 import { Link, useRoutes, useSearchParams } from "react-router-dom";
 import ImageModal from "./ImageModal";
 import { getSellerProfile } from "../../utils/userData";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 const SocialTypes = [
   {
@@ -108,6 +108,7 @@ const UserProfile = () => {
 
   return (
     <div className="bg-black">
+      <Navbar userData={userData} />
       <div
         id="userProfile"
         className="flex lg:flex-row flex-col justify-between max-w-[1920px] w-11/12 mx-auto gap-14 py-10 text-white"
@@ -121,7 +122,7 @@ const UserProfile = () => {
                     src={
                       userData?.image
                         ? userData?.image
-                        : "https://cdn.pixabay.com/photo/2017/02/25/22/04/user-icon-2098873_1280.png"
+                        : "../../../public/default_male.svg"
                     }
                     alt=""
                     className="size-full object-cover shrink-0"
@@ -141,57 +142,44 @@ const UserProfile = () => {
                       {userData?.profession}
                     </div>
                   </div>
-                  <div className="px-2 py-1 bg-black rounded-xl justify-center items-center gap-1 inline-flex">
-                    <div className="text-white text-base font-normal whitespace-nowrap">
+                  <div className="rounded-xl justify-center items-center gap-1 inline-flex">
+                    <div className="text-black text-base font-normal whitespace-nowrap">
                       {userData?.city}
                     </div>
-                    <IoLocationOutline className="text-white" />
-                  </div>
-                  <div className="justify-start items-start gap-2 inline-flex">
-                    <BsStarFill className="w-[21.14px] h-[20.25px] text-orange-500 relative" />
-                    <div className=" text-black text-base leading-normal">
-                      {Number(userData?.rating?.value).toFixed(1)}
-                    </div>
-                    <div className=" text-black text-base leading-normal">
-                      ({userData?.rating?.count})
-                    </div>
+                    <IoLocationOutline className="text-black" />
                   </div>
                 </div>
               </div>
-              {/* {showDetails && ( */}
-              <div className="w-full flex-col justify-start items-start gap-7 flex">
-                <div className="flex-col w-full justify-start items-start gap-0.5 flex">
-                  <div className="text-black text-xl font-bold">
-                    Phones Number
-                  </div>
-                  <div className="text-stone-500 3xl:text-lg 2xl:text-base text-sm font-normal flex justify-between items-center w-full">
-                    {userData?.phone_number}
-                  </div>
-                </div>
-                <div className="flex-col justify-start items-start gap-0.5 flex">
-                  <div className="text-black text-xl font-bold">
-                    Email Address
-                  </div>
-                  <div className="text-stone-500 3xl:text-lg 2xl:text-base text-sm font-normal">
-                    {userData?.email}
-                  </div>
-                </div>
-                <div className="w-full text-3xl justify-start items-start gap-[18px] inline-flex">
-                  {userData?.socialMediaLinks?.map((link, index) => (
-                    <Link to={link.link} key={index} className="text-black">
-                      {getIconByName(link.platformType)}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-              {/* )} */}
             </div>
+            {/* {showDetails && ( */}
+            <div className="w-full flex-col justify-start items-start gap-7 flex">
+              <div className="flex-col w-full justify-start items-start gap-0.5 flex">
+                <div className="text-xl font-bold">Phones Number</div>
+                <div className="text-white/50 3xl:text-lg 2xl:text-base text-sm font-normal flex justify-between items-center w-full">
+                  {userData?.phone_number}
+                </div>
+              </div>
+              <div className="flex-col justify-start items-start gap-0.5 flex">
+                <div className="text-xl font-bold">Email Address</div>
+                <div className="text-white/50 3xl:text-lg 2xl:text-base text-sm font-normal">
+                  {userData?.email}
+                </div>
+              </div>
+              <div className="w-full text-3xl justify-start items-start gap-[18px] inline-flex">
+                {userData?.socialMediaLinks?.map((link, index) => (
+                  <Link to={link.link} key={index} className="text-white">
+                    {getIconByName(link.platformType)}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            {/* )} */}
             {uid[0].toString() &&
               uid[0].get("uid").toString() === userData?.uid && (
                 <button
                   type="share"
                   onClick={handleShare}
-                  className="w-full bg-black text-white flex gap-2 justify-center items-center py-2 rounded-md"
+                  className="w-full bg-white text-black flex gap-2 justify-center items-center py-2 rounded-md"
                 >
                   Share
                   <FaShare className="text-xs" />
@@ -207,7 +195,7 @@ const UserProfile = () => {
                     {userData?.services?.map((service, index) => (
                       <div
                         key={index}
-                        className="px-[12.95px] pt-[4.35px] pb-[3.52px] rounded-[20.03px] border border-white justify-center items-center inline-flex"
+                        className="px-[12.95px] pt-[4.35px] pb-[3.52px] rounded-[20.03px] bg-[#4b484b] justify-center items-center inline-flex"
                       >
                         <p className=" text-[10px] leading-normal">{service}</p>
                       </div>
@@ -224,7 +212,7 @@ const UserProfile = () => {
                     {userData?.skills?.map((skill, index) => (
                       <div
                         key={index}
-                        className="px-[12.95px] pt-[4.35px] pb-[3.52px] rounded-[20.03px] border border-white justify-center items-center inline-flex"
+                        className="px-[12.95px] pt-[4.35px] pb-[3.52px] rounded-[20.03px] bg-[#4b484b] justify-center items-center inline-flex"
                       >
                         <p className=" text-[10px] leading-normal">{skill}</p>
                       </div>
@@ -300,7 +288,7 @@ const UserProfile = () => {
               </div>
             </div>
           )}
-          {userData?.images === null ? (
+          {userData?.images !== null ? (
             <div
               style={{
                 margin: 0,
@@ -323,6 +311,7 @@ const UserProfile = () => {
                     ) ? (
                       <video
                         src={data}
+                        key={i}
                         alt=""
                         controls
                         className="object-cover size-full rounded"
@@ -387,6 +376,7 @@ const UserProfile = () => {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 };
