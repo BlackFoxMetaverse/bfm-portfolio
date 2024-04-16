@@ -197,7 +197,7 @@ const UserProfile = () => {
               src={userData?.images[0]}
               alt=""
               controls
-              className="object-fill aspect-video size-full rounded-xl"
+              className="object-contain aspect-video size-full rounded-xl"
               autoPlay
             />
           ) : (
