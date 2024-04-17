@@ -25,7 +25,7 @@ const socials = [
 const Footer = () => {
   return (
     <footer className="bg-black text-white">
-      <div className="w-11/12 mx-auto py-10 pt-10 border-t-2 border-white/50 flex justify-between items-center">
+      <div className="w-11/12 mx-auto py-10 pt-10 border-t-2 gap-3 border-white/50 flex sm:flex-row flex-col justify-between sm:items-center">
         <div className="flex items-center gap-3">
           <p className="text-white/50 m-0">Designed and Style By</p>
           <img src="/white_fox.svg" alt="" className="aspect-video w-20" />

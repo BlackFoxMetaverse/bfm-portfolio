@@ -52,9 +52,8 @@ const ImageComponent = ({ src, alt, className, onClick }) => (
 
 const UserProfile = () => {
   const [userData, setUserData] = useState(null);
-  const [showImage, setShowImage] = useState(true);
   const [modalImage, setModalImageUrl] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showImage, setShowImage] = useState(true);
 
   const openImageModal = (imageUrl) => {
     setModalImageUrl(imageUrl);
@@ -156,7 +155,7 @@ const UserProfile = () => {
                         key={index}
                         className="px-2 py-1 rounded-[20.03px] bg-[#2f4f90] justify-center items-center inline-flex"
                       >
-                        <p className=" text-[10px] leading-normal">{service}</p>
+                        <p className="text-sm leading-normal">{service}</p>
                       </div>
                     ))}
                   </div>
@@ -173,7 +172,7 @@ const UserProfile = () => {
                         key={index}
                         className="px-2 py-1 rounded-[20.03px] bg-red-500 justify-center items-center inline-flex"
                       >
-                        <p className=" text-[10px] leading-normal">{skill}</p>
+                        <p className=" text-sm leading-normal">{skill}</p>
                       </div>
                     ))}
                   </div>
@@ -197,7 +196,7 @@ const UserProfile = () => {
               src={userData?.images[0]}
               alt=""
               controls
-              className="object-contain aspect-video size-full rounded-xl"
+              className="sm:object-contain object-cover sm:aspect-video size-full rounded-xl"
               autoPlay
             />
           ) : (
@@ -273,7 +272,7 @@ const UserProfile = () => {
                         key={i}
                         alt=""
                         controls
-                        className="object-contain aspect-video w-full rounded"
+                        className="sm:object-contain object-cover sm:aspect-video size-full rounded-xl"
                       />
                     ) : (
                       <div key={i} className={`relative`}>
@@ -298,42 +297,6 @@ const UserProfile = () => {
             </div>
           ) : null}
         </div>
-        {showModal && (
-          <div className="fixed z-10 inset-0 overflow-y-auto">
-            <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-              <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                  <div className="sm:flex sm:items-start">
-                    <div className="mt-3 text-center sm:mt-0 sm:text-left">
-                      <h3 className="text-lg leading-6 font-medium text-gray-900">
-                        Link Copied Successfully
-                      </h3>
-                      <div className="mt-2">
-                        <p className="text-sm text-gray-500">
-                          The link has been copied to your clipboard.
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          You can now paste it wherever you like.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                  <button
-                    onClick={() => {
-                      setShowModal(false);
-                    }}
-                    type="button"
-                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-black text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 sm:w-auto sm:text-sm"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
       <Footer />
     </div>
